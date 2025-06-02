@@ -27,7 +27,6 @@ interface PurchaseMapper {
 
     @InheritInverseConfiguration
     @Mapping(target = "cliente", ignore = true)
-    @Mapping(target = "productos", ignore = true)
      fun toCompra(purchase: Purchase): Compra
 
 

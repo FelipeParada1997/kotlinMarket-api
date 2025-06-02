@@ -29,7 +29,7 @@ class ProductMapperTest {
             codigoBarras = "1234567890",
             precioVenta = 10.0,
             cantidadStock = 100,
-            estado = true
+            estado = "true"
         )
 
         // Act
@@ -55,7 +55,7 @@ class ProductMapperTest {
                 codigoBarras = "1234567890",
                 precioVenta = 10.0,
                 cantidadStock = 100,
-                estado = true
+                estado = "true"
             ),
             Producto(
                 idProducto = 2,
@@ -64,7 +64,7 @@ class ProductMapperTest {
                 codigoBarras = "0987654321",
                 precioVenta = 20.0,
                 cantidadStock = 200,
-                estado = true
+                estado = "true"
             )
         )
 

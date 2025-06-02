@@ -29,52 +29,9 @@ class CompraRepository(
             .map { compras -> mapper.toPurchases(compras) }
     }
 
-    @Transactional
     override fun save(purchase: Purchase): Purchase {
-        // Validar que la compra tenga productos
-        if (purchase.items.isEmpty()) {
-            throw IllegalArgumentException("La compra debe tener al menos un producto en la lista 'items'")
-        }
-
-        try {
-            // Crear la compra sin productos primero
-            val compra = Compra(
-                idCliente = purchase.clientId,
-                fecha = purchase.date,
-                medioPago = purchase.paymentMethod,
-                comentario = purchase.comment,
-                estado = purchase.state
-            )
-
-            // Guardar la compra para obtener su ID
-            entityManager.persist(compra)
-            entityManager.flush()
-
-            // Una vez que tenemos el ID de compra, crear los productos
-            for (item in purchase.items) {
-                // Crear el ID compuesto
-                val pk = ComprasProductoPK(compra.idCompra, item.productId)
-
-                // Crear el producto de compra
-                val compraProducto = ComprasProducto(
-                    id = pk,
-                    cantidad = item.quantity,
-                    total = item.total,
-                    estado = if (item.active) "1" else "0",
-                    compra = compra
-                )
-
-                // Agregar a la lista de productos de la compra
-                compra.productos.add(compraProducto)
-            }
-
-            // Guardar todo en un solo paso
-            compraCrudRepository.save(compra)
-
-            // Convertir y devolver
-            return mapper.toPurchase(compra)
-        } catch (e: Exception) {
-            throw RuntimeException("Error al guardar la compra: ${e.message}", e)
-        }
+        val compra = mapper.toCompra(purchase)
+        compra.productos.forEach { it.compra = compra }
+        return mapper.toPurchase(compraCrudRepository.save(compra))
     }
 }

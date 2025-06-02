@@ -1,5 +1,4 @@
 package com.felipe.kotlinMarket_api.persistence
-package com.felipe.kotlinMarket_api.persistence
 
 import com.felipe.kotlinMarket_api.domain.Product
 import com.felipe.kotlinMarket_api.persistence.crud.ProductoCrudRepository
@@ -35,25 +34,27 @@ class ProductoRepositoryTest {
     @BeforeEach
     fun setup() {
         // Crear datos de prueba para entidades
-        testProducto = Producto().apply {
-            idProducto = 1
-            nombre = "Producto Test"
-            idCategoria = 1
-            precioVenta = 10.0
-            cantidadStock = 100
-            estado = true
-        }
+        testProducto = Producto(
+            idProducto = 1,
+            nombre = "Producto Test",
+            idCategoria = 1,
+            codigoBarras = "123456",
+            precioVenta = 10.0,
+            cantidadStock = 100,
+            estado = "true"
+        )
 
         productosList = listOf(
             testProducto,
-            Producto().apply {
-                idProducto = 2
-                nombre = "Otro Producto"
-                idCategoria = 1
-                precioVenta = 20.0
-                cantidadStock = 50
-                estado = true
-            }
+            Producto(
+                idProducto = 2,
+                nombre = "Otro Producto",
+                idCategoria = 1,
+                codigoBarras = "654321",
+                precioVenta = 20.0,
+                cantidadStock = 50,
+                estado = "true"
+            )
         )
 
         // Crear datos de prueba para modelos de dominio
@@ -120,7 +121,7 @@ class ProductoRepositoryTest {
     @Test
     fun getScarseProducts_whenProductsExist_shouldReturnProducts() {
         // Configurar mocks
-        Mockito.`when`(productoCrudRepository.findByCantidadStockLessThanAndEstado(10, true))
+        Mockito.`when`(productoCrudRepository.findByCantidadStockLessThanAndEstado(10, "true"))
             .thenReturn(Optional.of(productosList))
         Mockito.`when`(mapper.toProducts(productosList)).thenReturn(productsList)
 
@@ -132,7 +133,7 @@ class ProductoRepositoryTest {
         assertEquals(2, result.get().size)
 
         // Verificar que los métodos fueron llamados
-        Mockito.verify(productoCrudRepository).findByCantidadStockLessThanAndEstado(10, true)
+        Mockito.verify(productoCrudRepository).findByCantidadStockLessThanAndEstado(10, "true")
         Mockito.verify(mapper).toProducts(productosList)
     }
 
@@ -199,174 +200,5 @@ class ProductoRepositoryTest {
 
         // Verificar que el método fue llamado
         Mockito.verify(productoCrudRepository).deleteById(1)
-    }
-}
-import com.felipe.kotlinMarket_api.domain.Product
-import com.felipe.kotlinMarket_api.persistence.crud.ProductoCrudRepository
-import com.felipe.kotlinMarket_api.persistence.entity.Producto
-import com.felipe.kotlinMarket_api.persistence.mapper.ProductMapper
-import org.junit.jupiter.api.BeforeEach
-import org.junit.jupiter.api.Test
-import org.mockito.InjectMocks
-import org.mockito.Mock
-import org.mockito.Mockito.*
-import org.mockito.MockitoAnnotations
-import java.util.Optional
-import org.junit.jupiter.api.Assertions.*
-
-class ProductoRepositoryTest {
-
-    @Mock
-    private lateinit var productoCrudRepository: ProductoCrudRepository
-
-    @Mock
-    private lateinit var mapper: ProductMapper
-
-    @InjectMocks
-    private lateinit var productoRepository: ProductoRepository
-
-    private lateinit var producto: Producto
-    private lateinit var productosList: List<Producto>
-    private lateinit var product: Product
-    private lateinit var productsList: List<Product>
-
-    @BeforeEach
-    fun setup() {
-        MockitoAnnotations.openMocks(this)
-
-        // Configuración de datos de prueba
-        producto = Producto(
-            idProducto = 1,
-            nombre = "Test Producto",
-            idCategoria = 1,
-            codigoBarras = "1234567890",
-            precioVenta = 10.0,
-            cantidadStock = 100,
-            estado = true
-        )
-
-        product = Product(
-            productId = 1,
-            name = "Test Product",
-            categoryId = 1,
-            price = 10.0,
-            stock = 100,
-            active = true,
-            category = null
-        )
-
-        productosList = listOf(producto)
-        productsList = listOf(product)
-    }
-
-    @Test
-    fun `getAll should return all products`() {
-        // Arrange
-        `when`(productoCrudRepository.findAll()).thenReturn(productosList)
-        `when`(mapper.toProducts(productosList)).thenReturn(productsList)
-
-        // Act
-        val result = productoRepository.getAll()
-
-        // Assert
-        assertEquals(productsList, result)
-        verify(productoCrudRepository, times(1)).findAll()
-        verify(mapper, times(1)).toProducts(productosList)
-    }
-
-    @Test
-    fun `getByCategory should return products by category`() {
-        // Arrange
-        val categoryId = 1
-        `when`(productoCrudRepository.findByIdCategoriaOrderByNombreAsc(categoryId)).thenReturn(productosList)
-        `when`(mapper.toProducts(productosList)).thenReturn(productsList)
-
-        // Act
-        val result = productoRepository.getByCategory(categoryId)
-
-        // Assert
-        assertTrue(result.isPresent)
-        assertEquals(productsList, result.get())
-        verify(productoCrudRepository, times(1)).findByIdCategoriaOrderByNombreAsc(categoryId)
-        verify(mapper, times(1)).toProducts(productosList)
-    }
-
-    @Test
-    fun `getScarseProducts should return products with stock less than quantity`() {
-        // Arrange
-        val quantity = 10
-        `when`(productoCrudRepository.findByCantidadStockLessThanAndEstado(quantity, true)).thenReturn(Optional.of(productosList))
-        `when`(mapper.toProducts(productosList)).thenReturn(productsList)
-
-        // Act
-        val result = productoRepository.getScarseProducts(quantity)
-
-        // Assert
-        assertTrue(result.isPresent)
-        assertEquals(productsList, result.get())
-        verify(productoCrudRepository, times(1)).findByCantidadStockLessThanAndEstado(quantity, true)
-        verify(mapper, times(1)).toProducts(productosList)
-    }
-
-    @Test
-    fun `getProduct should return product when exists`() {
-        // Arrange
-        val productId = 1
-        `when`(productoCrudRepository.findById(productId)).thenReturn(Optional.of(producto))
-        `when`(mapper.toProduct(producto)).thenReturn(product)
-
-        // Act
-        val result = productoRepository.getProduct(productId)
-
-        // Assert
-        assertTrue(result.isPresent)
-        assertEquals(product, result.get())
-        verify(productoCrudRepository, times(1)).findById(productId)
-        verify(mapper, times(1)).toProduct(producto)
-    }
-
-    @Test
-    fun `getProduct should return empty optional when product does not exist`() {
-        // Arrange
-        val productId = 99
-        `when`(productoCrudRepository.findById(productId)).thenReturn(Optional.empty())
-
-        // Act
-        val result = productoRepository.getProduct(productId)
-
-        // Assert
-        assertFalse(result.isPresent)
-        verify(productoCrudRepository, times(1)).findById(productId)
-        verify(mapper, never()).toProduct(any())
-    }
-
-    @Test
-    fun `saveProduct should save and return product`() {
-        // Arrange
-        `when`(mapper.toProducto(product)).thenReturn(producto)
-        `when`(productoCrudRepository.save(producto)).thenReturn(producto)
-        `when`(mapper.toProduct(producto)).thenReturn(product)
-
-        // Act
-        val result = productoRepository.saveProduct(product)
-
-        // Assert
-        assertEquals(product, result)
-        verify(mapper, times(1)).toProducto(product)
-        verify(productoCrudRepository, times(1)).save(producto)
-        verify(mapper, times(1)).toProduct(producto)
-    }
-
-    @Test
-    fun `deleteProduct should delete product`() {
-        // Arrange
-        val productId = 1
-        doNothing().`when`(productoCrudRepository).deleteById(productId)
-
-        // Act
-        productoRepository.deleteProduct(productId)
-
-        // Assert
-        verify(productoCrudRepository, times(1)).deleteById(productId)
     }
 }

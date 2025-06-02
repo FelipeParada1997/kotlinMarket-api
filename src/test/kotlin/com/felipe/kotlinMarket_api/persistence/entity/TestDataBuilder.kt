@@ -22,7 +22,7 @@ class TestDataBuilder {
                 codigoBarras = "123456789$id",
                 precioVenta = 10.0 * id,
                 cantidadStock = 100,
-                estado = true
+                estado = "true"
             )
         }
 
@@ -62,7 +62,7 @@ class TestDataBuilder {
                 fecha = LocalDateTime.now(),
                 medioPago = "Efectivo",
                 comentario = "Compra Test $id",
-                estado = true
+                estado = "true"
             )
         }
 
@@ -76,7 +76,7 @@ class TestDataBuilder {
                 date = LocalDateTime.now(),
                 paymentMethod = "Efectivo",
                 comment = "Purchase Test $id",
-                state = true,
+                state = "true",
                 items = listOf(createPurchaseItem())
             )
         }

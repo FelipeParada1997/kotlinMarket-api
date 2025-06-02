@@ -33,7 +33,7 @@ class Producto (
     @Column(name = "cantidad_stock")
     var cantidadStock : Int ?,
 
-    var estado : Boolean? = null,
+    var estado : String? = null,
 
     @JsonIgnore
     @ManyToOne

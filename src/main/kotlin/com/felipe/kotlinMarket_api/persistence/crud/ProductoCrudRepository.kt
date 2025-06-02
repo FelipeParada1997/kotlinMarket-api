@@ -8,5 +8,5 @@ interface ProductoCrudRepository : CrudRepository<Producto, Int> {
 
     fun findByIdCategoriaOrderByNombreAsc(idCategoria : Int): List<Producto>
 
-    fun findByCantidadStockLessThanAndEstado(cantidadStock : Int, estado : Boolean): Optional<List<Producto>>
+    fun findByCantidadStockLessThanAndEstado(cantidadStock : Int, estado : String): Optional<List<Producto>>
 }

@@ -40,7 +40,7 @@ class ProductoRepository (
     // Obtiene productos con stock menor a la cantidad dada y activos.
     // Devuelve Optional<List<Product>>, vacío si no hay resultados.
     override fun getScarseProducts(quantity: Int): Optional<List<Product>> {
-        val productos: Optional<List<Producto>> = productoCrudRepository.findByCantidadStockLessThanAndEstado(quantity, true)
+        val productos: Optional<List<Producto>> = productoCrudRepository.findByCantidadStockLessThanAndEstado(quantity, "true")
     //.map convertirá Optional<List<Producto>> en Optional<List<Product>>.
         return productos.map {  listaProds -> mapper.toProducts(listaProds) }
     }
