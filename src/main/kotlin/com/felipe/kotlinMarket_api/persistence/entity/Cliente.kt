@@ -18,5 +18,5 @@ class Cliente (
     var direccion : String?,
 
     @OneToMany(mappedBy = "cliente", fetch = FetchType.LAZY)
-    var compras : MutableList<Compra> = mutableListOf()
+    var compras : MutableList<Compra>? = mutableListOf()
 ){}

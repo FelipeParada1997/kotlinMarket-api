@@ -19,7 +19,7 @@ class Producto (
     @Column(name = "id_producto")
     var idProducto : Int? = null,
 
-    var nombre : String? = null,
+    var nombre : String?,
 
     @Column(name = "id_categoria")
     var idCategoria : Int? ,
@@ -31,9 +31,9 @@ class Producto (
     var precioVenta : Double?,
 
     @Column(name = "cantidad_stock")
-    var cantidadStock : Int ?,
+    var cantidadStock : Int ,
 
-    var estado : String? = null,
+    var estado : String?,
 
     @JsonIgnore
     @ManyToOne

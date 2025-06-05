@@ -6,9 +6,10 @@ import org.mapstruct.InheritInverseConfiguration
 import org.mapstruct.Mapper
 import org.mapstruct.Mapping
 import org.mapstruct.Mappings
+import org.mapstruct.Named
 
 
-@Mapper(componentModel = "spring", uses = [ProductMapper::class])
+@Mapper(componentModel = "spring", uses = [ProductMapper::class, PurchaseItemMapperHelper::class])
 interface PurchaseItemMapper {
 
     @Mappings(
@@ -26,4 +27,7 @@ interface PurchaseItemMapper {
     fun toComprasProducto(item: PurchaseItem): ComprasProducto
 
 
+
+
 }
+

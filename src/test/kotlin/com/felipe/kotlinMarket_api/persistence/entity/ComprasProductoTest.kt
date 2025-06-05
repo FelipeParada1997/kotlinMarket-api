@@ -3,6 +3,8 @@ package com.felipe.kotlinMarket_api.persistence.entity
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
+import java.time.LocalDateTime
+import java.util.Date
 
 class ComprasProductoTest {
 
@@ -13,28 +15,50 @@ class ComprasProductoTest {
     @BeforeEach
     fun setup() {
         val pk1 = ComprasProductoPK(1, 1)
-        val pk2 = ComprasProductoPK(1, 1) // Mismo PK que pk1
-        val pk3 = ComprasProductoPK(2, 2) // PK diferente
+        val pk2 = ComprasProductoPK(1, 1)
+        val pk3 = ComprasProductoPK(2, 2)
+
+        val compraDummy = Compra(idCliente = null,
+            fecha = LocalDateTime.now(),
+            medioPago = "EFECTIVO",
+            comentario = "Compra de prueba",
+            estado = "ACTIVO")
+
+        val productoDummy = Producto(
+            idProducto = 1,
+            nombre = "Producto de prueba",
+            precioVenta = 10.0,
+            cantidadStock = 100,
+            estado = "ACTIVO",
+            idCategoria = 1,
+            codigoBarras = "1234567890"
+        )
 
         comprasProducto1 = ComprasProducto(
             id = pk1,
             cantidad = 2,
             total = 20.0,
-            estado = "1"
+            estado = "1",
+            compra = compraDummy,
+            producto = productoDummy
         )
 
         comprasProducto2 = ComprasProducto(
             id = pk2,
-            cantidad = 3, // Cantidad diferente
-            total = 30.0, // Total diferente
-            estado = "1"
+            cantidad = 3,
+            total = 30.0,
+            estado = "1",
+            compra = compraDummy,
+            producto = productoDummy
         )
 
         comprasProducto3 = ComprasProducto(
             id = pk3,
             cantidad = 2,
             total = 20.0,
-            estado = "1"
+            estado = "1",
+            compra = compraDummy,
+            producto = productoDummy
         )
     }
 
@@ -78,13 +102,32 @@ class ComprasProductoTest {
 
     @Test
     fun accessors_shouldGetAndSetValues() {
-        val comprasProducto = ComprasProducto()
         val pk = ComprasProductoPK(5, 10)
+        val compraDummy = Compra(
+            idCliente = null,
+            fecha = LocalDateTime.now(),
+            medioPago = "EFECTIVO",
+            comentario = "Compra de prueba",
+            estado = "ACTIVO"
+        )
+        val productoDummy = Producto(
+            idProducto = 1,
+            nombre = "Producto de prueba",
+            precioVenta = 10.0,
+            cantidadStock = 100,
+            estado = "ACTIVO",
+            idCategoria = 1,
+            codigoBarras = "1234567890"
+        )
 
-        comprasProducto.id = pk
-        comprasProducto.cantidad = 5
-        comprasProducto.total = 50.0
-        comprasProducto.estado = "0"
+        val comprasProducto = ComprasProducto(
+            id = pk,
+            cantidad = 5,
+            total = 50.0,
+            estado = "0",
+            compra = compraDummy,
+            producto = productoDummy
+        )
 
         assertEquals(pk, comprasProducto.id)
         assertEquals(5, comprasProducto.cantidad)

@@ -10,10 +10,10 @@ class Categoria (
         @Column(name = "id_categoria")
         var idCategoria : Int? = null,
 
-        var descripcion : String? = null,
+        var descripcion : String,
 
-        var estado : Boolean? = null,
+        var estado : Boolean,
 
         @OneToMany(mappedBy = "categoria", fetch = FetchType.LAZY)
-        var productos : MutableList<Producto> = mutableListOf()
+        var productos : MutableList<Producto>? = mutableListOf()
 ){}

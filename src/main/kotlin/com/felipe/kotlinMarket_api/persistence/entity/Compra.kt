@@ -25,14 +25,14 @@ class Compra (
     @Column(name = "id_cliente")
     var idCliente : String?,
 
-    var fecha : LocalDateTime,
+    var fecha : LocalDateTime?,
 
     @Column(name = "medio_pago")
-    var medioPago : String,
+    var medioPago : String?,
 
-    var comentario : String,
+    var comentario : String?,
 
-    var estado : String,
+    var estado : String?,
 
     @ManyToOne
     @JoinColumn(name = "id_cliente", insertable = false, updatable = false )

@@ -6,6 +6,7 @@ import com.felipe.kotlinMarket_api.persistence.crud.CompraCrudRepository
 import com.felipe.kotlinMarket_api.persistence.entity.Compra
 import com.felipe.kotlinMarket_api.persistence.entity.ComprasProducto
 import com.felipe.kotlinMarket_api.persistence.entity.ComprasProductoPK
+import com.felipe.kotlinMarket_api.persistence.entity.Producto
 import com.felipe.kotlinMarket_api.persistence.mapper.PurchaseMapper
 import jakarta.persistence.EntityManager
 import org.junit.jupiter.api.Assertions.*
@@ -17,7 +18,7 @@ import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.junit.jupiter.MockitoExtension
 import java.time.LocalDateTime
-import java.util.Optional
+import java.util.*
 
 @ExtendWith(MockitoExtension::class)
 class CompraRepositoryTest {
@@ -41,13 +42,24 @@ class CompraRepositoryTest {
 
     @BeforeEach
     fun setup() {
+        val productoDummy = Producto(
+            idProducto = 1,
+            nombre = "Producto de prueba",
+            precioVenta = 10.0,
+            cantidadStock = 100,
+            estado = "ACTIVO",
+            idCategoria = 1,
+            codigoBarras = "1234567890"
+        )
         // Crear datos de prueba para entidades
         val compraProductoPK = ComprasProductoPK(1, 1)
         val compraProducto = ComprasProducto(
             id = compraProductoPK,
             cantidad = 2,
             total = 20.0,
-            estado = "1"
+            estado = "ACTIVO",
+            compra = null,
+            producto  = productoDummy
         )
 
         testCompra = Compra(

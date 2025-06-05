@@ -14,23 +14,23 @@ import java.util.Objects
 class ComprasProducto (
 
     @EmbeddedId
-    var id : ComprasProductoPK? = null,
+    var id : ComprasProductoPK?,
 
-    var cantidad : Int? = null,
+    var cantidad : Int?,
 
-    var total : Double? = null,
+    var total : Double?,
 
-    var estado : String? = null,
+    var estado : String?,
 
     @ManyToOne
 
     @MapsId("idCompra")
     @JoinColumn(name = "id_compra")
-    var compra : Compra? = null,
+    var compra : Compra?,
 
     @ManyToOne
     @JoinColumn(name = "id_producto", insertable = false, updatable = false)
-    var producto : Producto? = null
+    var producto : Producto?
 ): Serializable {
 
     // Sobreescribir equals y hashCode para asegurar identidad correcta
